@@ -60,28 +60,12 @@ function freshDeck() {
     })
 }
 
-function dealCards() {
-    let deck1= new Deck(deck.cards.slice(0, 25));
-    let deck2= new Deck(deck.cards.slice(26, 51));
-    return deck1, deck2;
-}   
-
-function startGame(player1, player2) {
-    const deck = new Deck();
-    deck.shuffle();
-    deck.dealCards();
-    player1.addNewDeck(deck1);
-    player2.addNewDeck(deck2);
-}
-
 function displayRoundResults(player1, player2, roundNum) {
-    console.log(`${player1.name} plays: ${player1.playerDeck[roundNum].value} of ${player1.playerDeck[roundNum].suit}
-    `);
-    console.log(`${player2.name} plays: ${player2.playerDeck[roundNum].value} of ${player2.playerDeck[roundNum].suit}
-    `);
+    console.log(`${player1.name} plays: ${player1.playerDeck[roundNum].value} of ${player1.playerDeck[roundNum].suit}`);
+    console.log(`${player2.name} plays: ${player2.playerDeck[roundNum].value} of ${player2.playerDeck[roundNum].suit}`);
 }
 
-function executeRound(player1, player2) {
+function executeGame(player1, player2) {
         for (let i = 0; i < player1.playerDeck.length; i++) {
         displayRoundResults(player1, player2, i);
         if (CARD_VALUE_MAP[player1.playerDeck[i].value] > CARD_VALUE_MAP[player2.playerDeck[i].value]) {
@@ -91,9 +75,17 @@ function executeRound(player1, player2) {
             player2.score += 1;
             console.log(`${player2.name} has won this round`);
       } else {
-            console.log(`Both ${player1} and ${player2} have tied. No points rewarded`);
+            console.log(`Both ${player1.name} and ${player2.name} have tied. No points rewarded`);
       }
     }
+}
+
+function startGame(player1, player2) {
+    const deck = new Deck();
+    deck.shuffle();
+    player1.addNewDeck(deck.cards.slice(0, 25));
+    player2.addNewDeck(deck.cards.slice(26, 51));
+    executeGame(player1, player2);
 }
 
 function declareWinner(player1, player2) {
@@ -102,7 +94,13 @@ function declareWinner(player1, player2) {
     } else if (player1.score < player2.score) {
         console.log(`${player2.name} has won with a final score of: ${player2.score}`);
     } else {
-        console.log(`${player1.name} and ${player2.name} have tied!`);
+        console.log(`Both players have tied. There is no winner/loser.`);
     }
 } 
 
+let Jordan = new Player("Jordan");
+let Mercedes = new Player("Mercedes");
+
+startGame(Jordan, Mercedes);
+
+declareWinner(Jordan, Mercedes);
